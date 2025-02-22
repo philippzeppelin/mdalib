@@ -13,19 +13,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthorMapper implements Mapper<Author, AuthorDto> {
 
-    private final BookMapper bookMapper;
+//    private final BookMapper bookMapper;
 
     @Override
     public AuthorDto map(Author object) {
-        List<BookDto> books = object.getBooks().stream()
-                .map(bookMapper::map)
-                .toList();
+//        List<BookDto> books = object.getBooks().stream()
+//                .map(bookMapper::map)
+//                .toList();
 
         return new AuthorDto(
                 object.getId(),
                 object.getName(),
-                object.getBirthDate(),
-                books
+                object.getBirthDate() //,
+//                books
         );
     }
 //    @Override

@@ -17,7 +17,7 @@ import java.util.Optional;
 public class BookMapper implements Mapper<Book, BookDto> {
 
     private final AuthorMapper authorMapper;
-    private final AvailabilityMapper availabilityMapper;
+//    private final AvailabilityMapper availabilityMapper;
 
     @Override
     public BookDto map(Book object) {
@@ -26,9 +26,9 @@ public class BookMapper implements Mapper<Book, BookDto> {
                 .map(authorMapper::map)
                 .orElse(null);
 
-        List<AvailabilityDto> availabilities = object.getAvailabilities().stream()
-                .map(availabilityMapper::map)
-                .toList();
+//        List<AvailabilityDto> availabilities = object.getAvailabilities().stream()
+//                .map(availabilityMapper::map)
+//                .toList();
 
 //        Availability availability = Optional.ofNullable(object.getAvailabilities())
 //        .map(availabilityMapper::map)
@@ -38,8 +38,8 @@ public class BookMapper implements Mapper<Book, BookDto> {
                 object.getId(),
                 object.getTitle(),
                 object.getPublicationYear(),
-                author,
-                availabilities
+                author//,
+//                availabilities
         );
     }
 

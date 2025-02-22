@@ -25,7 +25,7 @@ public class ApplicationRunner {
     public CommandLineRunner commandLineRunner(AuthorRepository authorRepository) {
         return args -> {
             testConnection();
-            test(authorRepository);
+//            test(authorRepository);
         };
     }
 

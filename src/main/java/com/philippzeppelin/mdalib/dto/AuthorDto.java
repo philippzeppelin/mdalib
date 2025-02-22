@@ -10,5 +10,5 @@ public class AuthorDto {
     Long id;
     String name;
     LocalDate birthDate;
-    List<BookDto> books;
+//    List<BookDto> books;
 }

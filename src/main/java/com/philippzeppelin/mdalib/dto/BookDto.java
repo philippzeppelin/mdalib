@@ -10,5 +10,5 @@ public class BookDto {
     String title;
     Integer publicationYear;
     AuthorDto author;
-    List<AvailabilityDto> availability; // TODO availabilities?
+//    List<AvailabilityDto> availability; // TODO availabilities?
 }
