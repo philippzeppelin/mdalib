@@ -6,9 +6,8 @@ import java.util.List;
 
 @Value
 public class BookDto {
-//    Long id;
     String title;
     Integer publicationYear;
-    AuthorDto author;
-//    List<AvailabilityDto> availability; // TODO availabilities?
+    Long authorId;
+    List<Long> availabilityIds;
 }

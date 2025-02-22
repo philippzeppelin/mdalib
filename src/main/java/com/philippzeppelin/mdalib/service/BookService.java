@@ -1,5 +1,6 @@
 package com.philippzeppelin.mdalib.service;
 
+import com.philippzeppelin.mdalib.database.entity.Book;
 import com.philippzeppelin.mdalib.dto.BookDto;
 
 import java.util.List;
@@ -7,17 +8,13 @@ import java.util.List;
 public interface BookService {
 
     /**
-     * GET /authors/{authorId}/books
-     * Получение списка книг, написанных конкретным автором.
-     */
-    public List<BookDto> getBooksByAuthorId(Integer authorId);
-
-    /**
      * POST /books
      * Добавление новой книги. Требуется указать название (title), год публикации (publicationYear),
      * автора (authorId) и информацию о наличии (availabilityId).
+     *
+     * @return
      */
-    public void addBook(BookDto bookDto);
+    public BookDto addBook(BookDto bookDto);
 
     /**
      * DELETE /books/{bookId}

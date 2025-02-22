@@ -25,9 +25,4 @@ public class AvailabilityMapper implements Mapper<Availability, AvailabilityDto>
                 books
         );
     }
-
-//    @Override
-//    public AvailabilityDto map(Availability fromOjbect, AvailabilityDto toObject) {
-//        return Mapper.super.map(fromOjbect, toObject);
-//    }
 }

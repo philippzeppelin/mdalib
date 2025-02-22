@@ -4,8 +4,7 @@ import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.service.AuthorService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/authors")
 @RequiredArgsConstructor
 public class AuthorController {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthorController.class);
     private final AuthorService authorService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +39,7 @@ public class AuthorController {
         try {
             AuthorDto createdAuthor = authorService.saveAuthor(authorDto);
             return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
-        } catch (Exception e) {
+        } catch (Exception e) { // TODO custom exception handler
             log.error("Error creating new author: {}", e.getMessage()); // TODO Ошибку переделать
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

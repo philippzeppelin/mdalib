@@ -35,7 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto saveAuthor(AuthorDto authorDto) {
-        // TODO Смотреть дмдев + проект
         Author author = authorMapper.map(authorDto);
         Author savedAuthor = authorRepository.save(author);
         return authorMapper.map(savedAuthor);
