@@ -7,7 +7,7 @@ import java.util.List;
 
 @Value
 public class AuthorDto {
-    Long id;
+//    Long id;
     String name;
     LocalDate birthDate;
 //    List<BookDto> books;

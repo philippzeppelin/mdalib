@@ -1,18 +1,15 @@
 package com.philippzeppelin.mdalib.database.entity.http.controller;
 
 import com.philippzeppelin.mdalib.dto.AuthorDto;
+import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,12 +25,35 @@ public class AuthorController {
     public ResponseEntity<List<AuthorDto>> getAuthors(
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2")int size) { // TODO изменить на 10
-            List<AuthorDto> authors = authorService.getAuthors(name, page, size);
-            if (authors.isEmpty()) {
-                log.warn("No authors found");
-            }
-            log.info("Found {} authors", authors.size()); // TODO переделать на просто авторы найдены
+            @RequestParam(defaultValue = "10") int size) {
+        List<AuthorDto> authors = authorService.getAuthors(name, page, size);
+        if (authors.isEmpty()) {
+            log.warn("No authors found");
+        }
+        log.info("Found {} authors", authors.size()); // TODO переделать на просто авторы найдены
         return new ResponseEntity<>(authors, !authors.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthorDto> createNewAuthor(@RequestBody AuthorDto authorDto) {
+        log.info("Creating new author {}", authorDto.getName());
+        try {
+            AuthorDto createdAuthor = authorService.saveAuthor(authorDto);
+            return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error creating new author: {}", e.getMessage()); // TODO Ошибку переделать
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/books")
+    public ResponseEntity<List<BookDto>> getAuthorBooks(@PathVariable Long id) {
+        List<BookDto> books = authorService.findBooksByAuthorId(id);
+        if (books.isEmpty()) {
+            log.warn("No books found for id {}", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.info("Found books for {}", id);
+        return ResponseEntity.ok(books);
     }
 }

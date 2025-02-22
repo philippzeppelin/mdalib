@@ -22,14 +22,17 @@ public class AuthorMapper implements Mapper<Author, AuthorDto> {
 //                .toList();
 
         return new AuthorDto(
-                object.getId(),
+//                object.getId(),
                 object.getName(),
                 object.getBirthDate() //,
 //                books
         );
     }
-//    @Override
-//    public AuthorDto map(Author fromOjbect, AuthorDto toObject) {
-//        return Mapper.super.map(fromOjbect, toObject);
-//    }
+
+    public Author map(AuthorDto dto) {
+        return Author.builder()
+                .name(dto.getName())
+                .birthDate(dto.getBirthDate())
+                .build();
+    }
 }

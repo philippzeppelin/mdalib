@@ -1,7 +1,7 @@
 package com.philippzeppelin.mdalib.service;
 
 import com.philippzeppelin.mdalib.dto.AuthorDto;
-import org.springframework.data.domain.Page;
+import com.philippzeppelin.mdalib.dto.BookDto;
 
 import java.util.List;
 
@@ -19,5 +19,7 @@ public interface AuthorService {
      * POST /authors
      * Создание нового автора. Требуется передать имя (name) и дату рождения (birthDate).
      */
-    public AuthorDto getAuthorByName(String authorName);
+    public AuthorDto saveAuthor(AuthorDto author);
+
+    List<BookDto> findBooksByAuthorId(Long id);
 }

@@ -17,34 +17,16 @@ import java.util.Optional;
 public class BookMapper implements Mapper<Book, BookDto> {
 
     private final AuthorMapper authorMapper;
-//    private final AvailabilityMapper availabilityMapper;
 
     @Override
     public BookDto map(Book object) {
-        // TODO Написать маппер
-        AuthorDto author = Optional.ofNullable(object.getAuthor())
+        AuthorDto autor = Optional.ofNullable(object.getAuthor())
                 .map(authorMapper::map)
                 .orElse(null);
-
-//        List<AvailabilityDto> availabilities = object.getAvailabilities().stream()
-//                .map(availabilityMapper::map)
-//                .toList();
-
-//        Availability availability = Optional.ofNullable(object.getAvailabilities())
-//        .map(availabilityMapper::map)
-//                .orElse(null);
-
         return new BookDto(
-                object.getId(),
                 object.getTitle(),
                 object.getPublicationYear(),
-                author//,
-//                availabilities
+                autor
         );
     }
-
-//    @Override
-//    public BookDto map(Book fromOjbect, BookDto toObject) {
-//        return Mapper.super.map(fromOjbect, toObject);
-//    }
 }

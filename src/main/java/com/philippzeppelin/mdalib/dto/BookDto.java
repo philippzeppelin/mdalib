@@ -6,7 +6,7 @@ import java.util.List;
 
 @Value
 public class BookDto {
-    Long id;
+//    Long id;
     String title;
     Integer publicationYear;
     AuthorDto author;
