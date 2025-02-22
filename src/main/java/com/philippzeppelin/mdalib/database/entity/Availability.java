@@ -19,15 +19,15 @@ public class Availability {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotNull
     private String location;
 
     @NotNull
     @Min(value = 0)
-    private int quantity;
+    private Integer quantity;
 
     @ManyToMany(mappedBy = "availabilities")
-    private List<Book> book;
+    private List<Book> books;
 }

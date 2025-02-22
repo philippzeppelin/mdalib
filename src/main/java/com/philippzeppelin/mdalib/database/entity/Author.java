@@ -19,7 +19,7 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotNull
     private String name;
@@ -27,6 +27,15 @@ public class Author {
     @NotNull
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author") // TODO Найти как исправить такую залупу
     private List<Book> books;
+
+    @Override
+    public String toString() { // TODO Найти как исправить такую залупу
+        return "Author{" +
+               "birthDate=" + birthDate +
+               ", name='" + name + '\'' +
+               ", id=" + id +
+               '}';
+    }
 }

@@ -25,6 +25,7 @@ public class ApplicationRunner {
     public CommandLineRunner commandLineRunner(AuthorRepository authorRepository) {
         return args -> {
             testConnection();
+            test(authorRepository);
         };
     }
 
@@ -39,5 +40,9 @@ public class ApplicationRunner {
             System.out.println("Connection is not successful!");
             e.printStackTrace();
         }
+    }
+
+    private static void test(AuthorRepository authorRepository) {
+        authorRepository.findAll().forEach(System.out::println);
     }
 }
