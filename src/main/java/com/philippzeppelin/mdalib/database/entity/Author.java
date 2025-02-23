@@ -19,7 +19,7 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @NotNull
     private String name;
@@ -29,4 +29,13 @@ public class Author {
 
     @OneToMany(mappedBy = "author")
     private List<Book> books;
+
+    @Override
+    public String toString() {
+        return "Author{" +
+               "birthDate=" + birthDate +
+               ", name='" + name + '\'' +
+               ", id=" + id +
+               '}';
+    }
 }
