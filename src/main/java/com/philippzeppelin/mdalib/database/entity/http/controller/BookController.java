@@ -24,7 +24,7 @@ public class BookController {
         log.info("Creating new book: {}", bookDto.getTitle());
         try {
             BookDto createdBook = bookService.addBook(bookDto);
-            return ResponseEntity.ok().body(createdBook);
+            return ResponseEntity.ok().body(createdBook); // TODO Логи
         } catch (Exception e) { // TODO custom exception handler
             log.error("Error creating new book: {}", e.getMessage()); // TODO custom exception handler
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -33,8 +33,8 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BookDto> deleteBook(@PathVariable Long id) {
-        if (!bookRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+        if (!bookRepository.existsById(id)) { // TODO Спросить, нужен ли тут репозиторий, так как всё делаем через сервис
+            return ResponseEntity.notFound().build(); // TODO Логи
         }
         bookRepository.deleteById(id);
         log.info("Book with ID {} deleted successfully", id);

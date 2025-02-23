@@ -54,5 +54,7 @@ public class AuthorController {
         }
         log.info("Found books for {}", id);
         return ResponseEntity.ok(books);
+        // TODO Мб сделать так
+        // return ResponseEntity.status(HttpStatus.OK).body(availabilities);
     }
 }

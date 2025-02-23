@@ -15,14 +15,14 @@ public class AvailabilityMapper implements Mapper<Availability, AvailabilityDto>
 
     @Override
     public AvailabilityDto map(Availability object) {
-        List<BookDto> books = object.getBooks().stream()
-                .map(bookMapper::map).toList();
+//        List<BookDto> books = object.getBooks().stream()
+//                .map(bookMapper::map).toList();
 
         return new AvailabilityDto(
-                object.getId(),
+//                object.getId(),
                 object.getLocation(),
-                object.getQuantity(),
-                books
+                object.getQuantity()
+//                books
         );
     }
 }

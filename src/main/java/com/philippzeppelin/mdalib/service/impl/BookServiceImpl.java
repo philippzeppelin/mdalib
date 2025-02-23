@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new RuntimeException("Author not found"));
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
 
-        Book book = Book.builder()
+        Book book = Book.builder() // TODO Логи
                 .title(bookDto.getTitle())
                 .publicationYear(bookDto.getPublicationYear())
                 .author(author)
@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
     public boolean deleteBook(Long bookId) { // TODO чекнуть, есть ли селект
         log.info("Deleting book with id: {}", bookId);
         if (bookRepository.existsById(bookId)) {
-            bookRepository.deleteById(bookId);
+            bookRepository.deleteById(bookId); // TODO Логи
             return true;
         }
         return false;

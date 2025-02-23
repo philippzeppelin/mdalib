@@ -6,8 +6,8 @@ import java.util.List;
 
 @Value
 public class AvailabilityDto {
-    Long id;
+//    Long id;
     String location;
     Integer quantity;
-    List<BookDto> book;
+//    List<BookDto> book;
 }

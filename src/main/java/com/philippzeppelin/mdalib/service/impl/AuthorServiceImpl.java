@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final BookMapper bookMapper;
 
     @Override
-    public List<AuthorDto> getAuthors(String name, int page, int size) {
+    public List<AuthorDto> getAuthors(String name, int page, int size) { // TODO Логи
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         return authorRepository.findByNameContainingIgnoreCase(name == null ? "" : name, pageable)
                 .map(authorMapper::map).stream()
@@ -37,14 +37,14 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public AuthorDto saveAuthor(AuthorDto authorDto) {
+    public AuthorDto saveAuthor(AuthorDto authorDto) { // TODO Логи
         Author author = authorMapper.map(authorDto);
         Author savedAuthor = authorRepository.save(author);
         return authorMapper.map(savedAuthor);
     }
 
     @Override
-    public List<BookDto> findBooksByAuthorId(Long id) {
+    public List<BookDto> findBooksByAuthorId(Long id) { // TODO Логи
         return authorRepository.findBooksByAuthorId(id).stream()
                 .map(bookMapper::map)
                 .toList();
