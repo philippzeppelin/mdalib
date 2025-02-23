@@ -27,11 +27,11 @@ public class Author {
     @NotNull
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "author") // TODO Найти как исправить такую залупу
+    @OneToMany(mappedBy = "author")
     private List<Book> books;
 
     @Override
-    public String toString() { // TODO Найти как исправить такую залупу
+    public String toString() {
         return "Author{" +
                "birthDate=" + birthDate +
                ", name='" + name + '\'' +

@@ -1,7 +1,6 @@
 package com.philippzeppelin.mdalib.service.impl;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
-import com.philippzeppelin.mdalib.database.entity.Book;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

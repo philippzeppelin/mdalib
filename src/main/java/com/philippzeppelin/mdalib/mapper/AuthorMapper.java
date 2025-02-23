@@ -13,7 +13,7 @@ public class AuthorMapper implements Mapper<Author, AuthorDto> {
     public AuthorDto map(Author object) {
         return new AuthorDto(
                 object.getName(),
-                object.getBirthDate() //,
+                object.getBirthDate()
         );
     }
 

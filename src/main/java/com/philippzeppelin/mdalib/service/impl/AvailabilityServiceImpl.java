@@ -1,6 +1,5 @@
 package com.philippzeppelin.mdalib.service.impl;
 
-import com.philippzeppelin.mdalib.database.entity.Availability;
 import com.philippzeppelin.mdalib.dto.AvailabilityDto;
 import com.philippzeppelin.mdalib.mapper.AvailabilityMapper;
 import com.philippzeppelin.mdalib.repository.AvailabilityRepository;

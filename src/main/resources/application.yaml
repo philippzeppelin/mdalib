@@ -10,7 +10,7 @@ spring:
       hibernate:
         format_sql: true
         hbm2ddl.auto: validate
-    open-in-view: false # TODO Запросить у чат гпт что это такое
+    open-in-view: false
   liquibase:
     enabled: true
     drop-first: false

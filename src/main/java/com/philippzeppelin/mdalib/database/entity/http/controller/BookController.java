@@ -1,12 +1,10 @@
 package com.philippzeppelin.mdalib.database.entity.http.controller;
 
-import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,18 +25,14 @@ public class BookController {
             return ResponseEntity.ok().body(createdBook); // TODO Логи
         } catch (Exception e) { // TODO custom exception handler
             log.error("Error creating new book: {}", e.getMessage()); // TODO custom exception handler
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BookDto> deleteBook(@PathVariable Long id) {
-        if (!bookRepository.existsById(id)) { // TODO Спросить, нужен ли тут репозиторий, так как всё делаем через сервис
-            return ResponseEntity.notFound().build(); // TODO Логи
-        }
-        bookRepository.deleteById(id);
+        bookService.deleteBook(id);
         log.info("Book with ID {} deleted successfully", id);
         return ResponseEntity.noContent().build();
     }
 }
-// TODO найти все new ResponseEntity<> и переделать их в ResponseEntity.ok/error

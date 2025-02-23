@@ -2,7 +2,6 @@ package com.philippzeppelin.mdalib.repository;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.database.entity.Book;
-import com.philippzeppelin.mdalib.dto.BookDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

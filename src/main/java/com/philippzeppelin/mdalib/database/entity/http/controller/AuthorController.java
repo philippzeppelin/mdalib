@@ -30,7 +30,9 @@ public class AuthorController {
             log.warn("No authors found");
         }
         log.info("Found {} authors", authors.size()); // TODO переделать на просто авторы найдены
-        return new ResponseEntity<>(authors, !authors.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        return authors.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(authors);
     }
 
     @PostMapping
@@ -41,7 +43,7 @@ public class AuthorController {
             return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
         } catch (Exception e) { // TODO custom exception handler
             log.error("Error creating new author: {}", e.getMessage()); // TODO Ошибку переделать
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -50,11 +52,9 @@ public class AuthorController {
         List<BookDto> books = authorService.findBooksByAuthorId(id);
         if (books.isEmpty()) {
             log.warn("No books found for id {}", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         log.info("Found books for {}", id);
         return ResponseEntity.ok(books);
-        // TODO Мб сделать так
-        // return ResponseEntity.status(HttpStatus.OK).body(availabilities);
     }
 }

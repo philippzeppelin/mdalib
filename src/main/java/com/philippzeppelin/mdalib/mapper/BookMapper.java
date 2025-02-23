@@ -12,8 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookMapper implements Mapper<Book, BookDto> {
 
-    private final AuthorMapper authorMapper;
-
     @Override
     public BookDto map(Book object) {
         List<Long> availabilityIds = object.getAvailabilities().stream()

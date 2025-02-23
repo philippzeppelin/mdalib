@@ -46,12 +46,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public boolean deleteBook(Long bookId) { // TODO чекнуть, есть ли селект
+    public void deleteBook(Long bookId) { // TODO чекнуть, есть ли селект
         log.info("Deleting book with id: {}", bookId);
-        if (bookRepository.existsById(bookId)) {
-            bookRepository.deleteById(bookId); // TODO Логи
-            return true;
+        if (!bookRepository.existsById(bookId)) {
+            log.warn("Book with ID {} not found", bookId);
         }
-        return false;
+        bookRepository.deleteById(bookId);
+        log.info("Book with ID {} deleted successfully", bookId);
     }
 }
