@@ -29,7 +29,7 @@ public class AuthorController {
         if (authors.isEmpty()) {
             log.warn("No authors found");
         }
-        log.info("Found {} authors", authors.size()); // TODO переделать на просто авторы найдены
+        log.info("Found {} authors", authors.size());
         return authors.isEmpty()
                 ? ResponseEntity.notFound().build()
                 : ResponseEntity.ok(authors);
@@ -48,7 +48,8 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}/books")
-    public ResponseEntity<List<BookDto>> getAuthorBooks(@PathVariable Long id) {
+    public ResponseEntity<List<BookDto>> getBooksByAuthorId(@PathVariable Long id) { // TODO N+1 MDA-1017
+        log.info("Retrieving author books for author {}", id);
         List<BookDto> books = authorService.findBooksByAuthorId(id);
         if (books.isEmpty()) {
             log.warn("No books found for id {}", id);
