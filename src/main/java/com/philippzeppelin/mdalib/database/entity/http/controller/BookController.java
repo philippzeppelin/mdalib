@@ -2,15 +2,13 @@ package com.philippzeppelin.mdalib.database.entity.http.controller;
 
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
+import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
     private final BookService bookService;
+    private final BookRepository bookRepository;
 
     @PostMapping
     public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
@@ -30,6 +29,16 @@ public class BookController {
             log.error("Error creating new book: {}", e.getMessage()); // TODO custom exception handler
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BookDto> deleteBook(@PathVariable Long id) {
+        if (!bookRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        bookRepository.deleteById(id);
+        log.info("Book with ID {} deleted successfully", id);
+        return ResponseEntity.noContent().build();
     }
 }
 // TODO найти все new ResponseEntity<> и переделать их в ResponseEntity.ok/error

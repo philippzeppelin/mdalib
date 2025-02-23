@@ -1,9 +1,6 @@
 package com.philippzeppelin.mdalib.service;
 
-import com.philippzeppelin.mdalib.database.entity.Book;
 import com.philippzeppelin.mdalib.dto.BookDto;
-
-import java.util.List;
 
 public interface BookService {
 
@@ -19,6 +16,8 @@ public interface BookService {
     /**
      * DELETE /books/{bookId}
      * Удаление книги по её идентификатору.
+     *
+     * @return
      */
-    public void deleteBook(Integer bookId);
+    public boolean deleteBook(Long bookId);
 }

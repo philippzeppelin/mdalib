@@ -12,13 +12,14 @@ import com.philippzeppelin.mdalib.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -28,7 +29,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto addBook(BookDto bookDto) {
-        log.warn("Searching for author with id: {}", bookDto.getAuthorId());
+        log.warn("Searching for author with id: {}", bookDto.getAuthorId()); // TODO Сделать нормальный лог
         Author author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found"));
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
@@ -44,7 +45,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(Integer bookId) {
-
+    @Transactional
+    public boolean deleteBook(Long bookId) { // TODO чекнуть, есть ли селект
+        log.info("Deleting book with id: {}", bookId);
+        if (bookRepository.existsById(bookId)) {
+            bookRepository.deleteById(bookId);
+            return true;
+        }
+        return false;
     }
 }
