@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Slf4j
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 public class BookServiceImpl implements BookService {
@@ -28,13 +28,13 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public BookDto addBook(BookDto bookDto) {
-        log.warn("Searching for author with id: {}", bookDto.getAuthorId()); // TODO Сделать нормальный лог
+    public BookDto addBook(BookDto bookDto) { // TODO N+1 MDA-1017
+        log.warn("Searching for author with id: {}", bookDto.getAuthorId());
         Author author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found"));
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
 
-        Book book = Book.builder() // TODO Логи
+        Book book = Book.builder()
                 .title(bookDto.getTitle())
                 .publicationYear(bookDto.getPublicationYear())
                 .author(author)
@@ -46,12 +46,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void deleteBook(Long bookId) { // TODO чекнуть, есть ли селект
+    public void deleteBook(Long bookId) { // TODO N+1 MDA-1017
         log.info("Deleting book with id: {}", bookId);
         if (!bookRepository.existsById(bookId)) {
-            log.warn("Book with ID {} not found", bookId);
+            log.error("Book with ID {} not found", bookId);
         }
         bookRepository.deleteById(bookId);
         log.info("Book with ID {} deleted successfully", bookId);
     }
 }
+

@@ -22,7 +22,7 @@ public class BookController {
         log.info("Creating new book: {}", bookDto.getTitle());
         try {
             BookDto createdBook = bookService.addBook(bookDto);
-            return ResponseEntity.ok().body(createdBook); // TODO Логи
+            return ResponseEntity.ok().body(createdBook);
         } catch (Exception e) { // TODO custom exception handler
             log.error("Error creating new book: {}", e.getMessage()); // TODO custom exception handler
             return ResponseEntity.internalServerError().build();
@@ -30,9 +30,15 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<BookDto> deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
-        log.info("Book with ID {} deleted successfully", id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
+        log.info("Deleting book: {}", id);
+        try {
+            bookService.deleteBook(id);
+            log.info("Book with ID {} deleted successfully", id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("Error deleting book: {}", e.getMessage());
+            return null;
+        }
     }
 }

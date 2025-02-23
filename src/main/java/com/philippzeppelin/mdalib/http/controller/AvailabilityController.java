@@ -22,6 +22,7 @@ public class AvailabilityController {
 
     @GetMapping
     public ResponseEntity<List<AvailabilityDto>> getAvailability() {
+        log.info("Retrieving availability");
         List<AvailabilityDto> availabilities = availabilityService.getAllLocations();
         if (availabilities.isEmpty()) {
             log.warn("No availability found");

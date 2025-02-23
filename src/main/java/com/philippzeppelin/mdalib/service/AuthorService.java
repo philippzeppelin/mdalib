@@ -11,5 +11,5 @@ public interface AuthorService {
 
     AuthorDto saveAuthor(AuthorDto author);
 
-    List<BookDto> findBooksByAuthorId(Long id);
+    List<BookDto> findBooksByAuthorId(Long authorId);
 }
