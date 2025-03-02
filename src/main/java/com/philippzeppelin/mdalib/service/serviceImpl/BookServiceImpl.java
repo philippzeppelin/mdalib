@@ -1,4 +1,4 @@
-package com.philippzeppelin.mdalib.service.impl;
+package com.philippzeppelin.mdalib.service.serviceImpl;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.database.entity.Availability;
@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
     public BookDto addBook(BookDto bookDto) { // TODO N+1 MDA-1017
         log.warn("Searching for author with id: {}", bookDto.getAuthorId());
         Author author = authorRepository.findById(bookDto.getAuthorId())
-                .orElseThrow(() -> new RuntimeException("Author not found"));
+                .orElseThrow(() -> new RuntimeException("Author not found")); // TODO Создать исключение
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
 
         Book book = Book.builder()

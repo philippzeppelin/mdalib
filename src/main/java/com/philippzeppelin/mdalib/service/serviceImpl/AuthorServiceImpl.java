@@ -1,4 +1,4 @@
-package com.philippzeppelin.mdalib.service.impl;
+package com.philippzeppelin.mdalib.service.serviceImpl;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
@@ -59,6 +59,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<BookDto> findBooksByAuthorId(Long id) {
+        if (id == null) {
+            log.error("Attempt to find books by null AuthorId");
+            throw new IllegalArgumentException("Author ID cannot be null");
+        }
         log.info("Find books by authorId: {}", id);
         List<BookDto> books = authorRepository.findBooksByAuthorId(id).stream()
                 .map(bookMapper::map)
