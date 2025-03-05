@@ -9,6 +9,7 @@ import com.philippzeppelin.mdalib.repository.AuthorRepository;
 import com.philippzeppelin.mdalib.repository.AvailabilityRepository;
 import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.BookService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -29,7 +30,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto addBook(BookDto bookDto) { // TODO N+1 MDA-1017
-        log.warn("Searching for author with id: {}", bookDto.getAuthorId());
+        log.info("Searching for author with id: {}", bookDto.getAuthorId());
         Author author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found")); // TODO Создать исключение
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
@@ -41,21 +42,19 @@ public class BookServiceImpl implements BookService {
                 .availabilities(availabilities)
                 .build();
         Book savedBook = bookRepository.save(book);
-        return bookMapper.map(savedBook);
+        return bookMapper.mapToDto(savedBook);
     }
 
     @Override
     @Transactional
     public void deleteBook(Long bookId) { // TODO N+1 MDA-1017
         log.info("Deleting book with id: {}", bookId);
-        if (bookRepository.existsById(bookId)) {
-            System.out.println(bookRepository.existsById(bookId));
-            bookRepository.deleteById(bookId);
-            log.info("Book with ID {} deleted successfully", bookId);
-        } else {
-            log.error("Book with ID {} not found", bookId);
-            throw new RuntimeException("Book with ID " + bookId + " not found"); // TODO исправить на кастомную ошибку
-        }
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> {
+                    log.error("Book with ID {} not found", bookId);
+                    return new EntityNotFoundException("Book with ID " + bookId + " not found"); // TODO custom exception
+                });
+        bookRepository.delete(book);
+        log.info("Book with ID {} deleted successfully", bookId);
     }
 }
-

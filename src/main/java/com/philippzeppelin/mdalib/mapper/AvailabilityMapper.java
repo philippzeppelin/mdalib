@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class AvailabilityMapper implements Mapper<Availability, AvailabilityDto> {
 
     @Override
-    public AvailabilityDto map(Availability object) {
+    public AvailabilityDto mapToDto(Availability object) {
         return new AvailabilityDto(
                 object.getLocation(),
                 object.getQuantity()

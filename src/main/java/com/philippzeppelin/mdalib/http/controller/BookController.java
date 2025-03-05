@@ -1,8 +1,8 @@
 package com.philippzeppelin.mdalib.http.controller;
 
 import com.philippzeppelin.mdalib.dto.BookDto;
-import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.BookService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     private final BookService bookService;
-//    private final BookRepository bookRepository; // TODO убрать
 
     @PostMapping
     public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
@@ -41,6 +40,9 @@ public class BookController {
             bookService.deleteBook(id);
             log.info("Book with ID {} deleted successfully", id);
             return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            log.error("Book with ID {} not found", id);
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             log.error("Error deleting book: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // TODO исправить

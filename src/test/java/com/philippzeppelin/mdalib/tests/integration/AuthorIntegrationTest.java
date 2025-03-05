@@ -1,32 +1,22 @@
 package com.philippzeppelin.mdalib.tests.integration;
 
-import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
-import com.philippzeppelin.mdalib.repository.AvailabilityRepository;
-import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.AuthorService;
-import com.philippzeppelin.mdalib.service.AvailabilityService;
 import com.philippzeppelin.mdalib.tests.integration.pojo.AuthorCreateRequest;
 import io.restassured.RestAssured;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthorIntegrationTest extends IntegrationTestBase {
@@ -34,30 +24,17 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     @Autowired
     private AuthorRepository authorRepository;
 
-//    @Autowired
-//    private BookRepository bookRepository;
-//
-//    @Autowired
-//    private AvailabilityRepository availabilityRepository;
-
     @MockitoSpyBean
     private AuthorService authorService;
 
     @LocalServerPort
     private int port;
 
-//    @BeforeEach
-//    void setUp() {
-//        bookRepository.deleteAll();
-//        availabilityRepository.deleteAll();
-//        authorRepository.deleteAll();
-//    }
-
     private String getBaseUrl() {
         return "http://localhost:" + port + "/api/v1/authors";
     }
 
-//    http://localhost:8080/api/v1/authors
+    //    http://localhost:8080/api/v1/authors
     @Test
     public void getAllAuthors_success() {
         RestAssured
@@ -140,7 +117,7 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
 
         RestAssured
                 .given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body(request)
                 .when()
                 .post(getBaseUrl())

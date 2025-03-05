@@ -13,7 +13,7 @@ import java.util.List;
 public class BookMapper implements Mapper<Book, BookDto> {
 
     @Override
-    public BookDto map(Book object) {
+    public BookDto mapToDto(Book object) {
         List<Long> availabilityIds = object.getAvailabilities().stream()
                 .map(Availability::getId)
                 .toList();

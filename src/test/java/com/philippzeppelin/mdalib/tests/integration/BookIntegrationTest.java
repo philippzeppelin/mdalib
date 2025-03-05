@@ -1,15 +1,12 @@
 package com.philippzeppelin.mdalib.tests.integration;
 
-import com.philippzeppelin.mdalib.tests.integration.pojo.AuthorCreateRequest;
 import com.philippzeppelin.mdalib.tests.integration.pojo.BookCreateRequest;
 import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -24,7 +21,7 @@ public class BookIntegrationTest {
         return "http://localhost:" + port + "/api/v1/books";
     }
 
-//    http://localhost:8080/api/v1/books
+    //    http://localhost:8080/api/v1/books
     @Test
     public void addBook_success() {
         BookCreateRequest request = new BookCreateRequest();
@@ -59,7 +56,6 @@ public class BookIntegrationTest {
                 .when()
                 .post(getBaseUrl())
                 .then()
-                .log().all()
                 .statusCode(400);
     }
 
@@ -99,17 +95,15 @@ public class BookIntegrationTest {
                 .statusCode(500);
     }
 
-//    http://localhost:8080/api/v1/books/27
+    //    http://localhost:8080/api/v1/books/27
     @Test
     public void deleteBook_success() {
         long bookId = 1L;
         RestAssured
                 .given()
-                .contentType("application/json")
                 .when()
                 .delete(getBaseUrl() + "/" + bookId)
                 .then()
-                .log().all()
                 .statusCode(204);
     }
 
@@ -118,11 +112,9 @@ public class BookIntegrationTest {
         long bookId = 999L;
         RestAssured
                 .given()
-                .contentType("application/json")
                 .when()
                 .delete(getBaseUrl() + "/" + bookId)
                 .then()
-                .log().all()
-                .statusCode(500); // TODO Посмотреть какая ошибка выходит в реальных проектах
+                .statusCode(404);
     }
 }

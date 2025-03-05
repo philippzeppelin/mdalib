@@ -51,10 +51,10 @@ class AuthorServiceImplTest {
         when(authorRepository.findByNameContainingIgnoreCase(eq(""), any(Pageable.class)))
                 .thenReturn(page);
 
-        when(authorMapper.map(authors.get(0)))
+        when(authorMapper.mapToDto(authors.get(0)))
                 .thenReturn(new AuthorDto("Муса Джалиль", LocalDate.of(1906, 2, 15)));
 
-        when(authorMapper.map(authors.get(1)))
+        when(authorMapper.mapToDto(authors.get(1)))
                 .thenReturn(new AuthorDto("Габдулла Тукай", LocalDate.of(1906, 2, 15)));
 
         List<AuthorDto> result = authorService.getAuthors(null, 0, 100);
@@ -86,7 +86,7 @@ class AuthorServiceImplTest {
         when(authorRepository.findByNameContainingIgnoreCase(eq(searchingAuthorName), any(Pageable.class)))
                 .thenReturn(page);
 
-        when(authorMapper.map(authors.get(0)))
+        when(authorMapper.mapToDto(authors.get(0)))
                 .thenReturn(new AuthorDto("Муса Джалиль", LocalDate.of(1906, 2, 15)));
 
         List<AuthorDto> result = authorService.getAuthors(searchingAuthorName, 0, 100);
@@ -110,7 +110,7 @@ class AuthorServiceImplTest {
         when(authorRepository.findByNameContainingIgnoreCase(eq(""), any(Pageable.class)))
                 .thenReturn(page);
 
-        when(authorMapper.map(authors.get(0)))
+        when(authorMapper.mapToDto(authors.get(0)))
                 .thenReturn(new AuthorDto("Муса Джалиль", LocalDate.of(1906, 2, 15)));
 
         List<AuthorDto> result = authorService.getAuthors(null, 0, 1);
@@ -128,8 +128,8 @@ class AuthorServiceImplTest {
         Author author = AuthorServiceUtil.getAuthor();
         AuthorDto authorDto = new AuthorDto(author.getName(), author.getBirthDate());
 
-        when(authorMapper.map(authorDto)).thenReturn(author);
-        when(authorMapper.map(author)).thenReturn(new AuthorDto(author.getName(), author.getBirthDate()));
+        when(authorMapper.mapToEntity(authorDto)).thenReturn(author);
+        when(authorMapper.mapToDto(author)).thenReturn(new AuthorDto(author.getName(), author.getBirthDate()));
         when(authorRepository.save(author)).thenReturn(author);
 
         AuthorDto savedAuthor = authorService.saveAuthor(authorDto);
@@ -152,7 +152,7 @@ class AuthorServiceImplTest {
         Author author = AuthorServiceUtil.getAuthor();
         AuthorDto authorDto = new AuthorDto(author.getName(), author.getBirthDate());
 
-        when(authorMapper.map(authorDto)).thenReturn(author);
+        when(authorMapper.mapToEntity(authorDto)).thenReturn(author);
         when(authorRepository.save(author))
                 .thenThrow(new RuntimeException("Ошибка сохранении автора")); // TODO Переделать на кастомный класс-эксешпн
 
@@ -166,9 +166,9 @@ class AuthorServiceImplTest {
         List<Book> books = BookServiceUtil.getListOfBooks();
 
         when(authorRepository.findBooksByAuthorId(authorId)).thenReturn(books);
-        when(bookMapper.map(books.get(0)))
+        when(bookMapper.mapToDto(books.get(0)))
                 .thenReturn(new BookDto("Шурале", 1800, 1L, List.of()));
-        when(bookMapper.map(books.get(1)))
+        when(bookMapper.mapToDto(books.get(1)))
                 .thenReturn(new BookDto("Водяная", 1801, 1L, List.of()));
 
         List<BookDto> result = authorService.findBooksByAuthorId(authorId);

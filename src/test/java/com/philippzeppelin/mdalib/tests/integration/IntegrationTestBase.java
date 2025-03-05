@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 //        "classpath:sql/data.sql"
 //})
 public abstract class IntegrationTestBase {
-
+//
 //    private static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:17.2");
 //
 //    @BeforeAll
