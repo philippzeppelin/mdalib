@@ -34,7 +34,6 @@ public class BookServiceImpl implements BookService {
         Author author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found")); // TODO Создать исключение
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
-
         Book book = Book.builder()
                 .title(bookDto.getTitle())
                 .publicationYear(bookDto.getPublicationYear())
@@ -46,7 +45,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    @Transactional
     public void deleteBook(Long bookId) { // TODO N+1 MDA-1017
         log.info("Deleting book with id: {}", bookId);
         Book book = bookRepository.findById(bookId)
