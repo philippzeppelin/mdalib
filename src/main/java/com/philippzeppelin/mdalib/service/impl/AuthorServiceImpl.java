@@ -1,4 +1,4 @@
-package com.philippzeppelin.mdalib.service.serviceImpl;
+package com.philippzeppelin.mdalib.service.impl;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j

@@ -1,8 +1,6 @@
-package com.philippzeppelin.mdalib.serviceImpl.util;
+package com.philippzeppelin.mdalib.tests.unit.service.util;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
-import com.philippzeppelin.mdalib.dto.AuthorDto;
-import com.philippzeppelin.mdalib.dto.BookDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

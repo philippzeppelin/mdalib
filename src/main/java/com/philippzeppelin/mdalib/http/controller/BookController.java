@@ -5,6 +5,8 @@ import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +17,17 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     private final BookService bookService;
-    private final BookRepository bookRepository;
+//    private final BookRepository bookRepository; // TODO убрать
 
     @PostMapping
     public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
         log.info("Creating new book: {}", bookDto.getTitle());
         try {
             BookDto createdBook = bookService.addBook(bookDto);
-            return ResponseEntity.ok().body(createdBook);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(createdBook);
         } catch (Exception e) { // TODO custom exception handler
             log.error("Error creating new book: {}", e.getMessage()); // TODO custom exception handler
             return ResponseEntity.internalServerError().build();
@@ -38,7 +43,7 @@ public class BookController {
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             log.error("Error deleting book: {}", e.getMessage());
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // TODO исправить
         }
     }
 }

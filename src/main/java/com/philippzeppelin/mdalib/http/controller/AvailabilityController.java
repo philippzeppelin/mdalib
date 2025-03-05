@@ -14,14 +14,14 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/availability")
+@RequestMapping("/api/v1/availabilities")
 @RequiredArgsConstructor
 public class AvailabilityController {
 
     private final AvailabilityService availabilityService;
 
     @GetMapping
-    public ResponseEntity<List<AvailabilityDto>> getAvailability() {
+    public ResponseEntity<List<AvailabilityDto>> getAvailabilities() {
         log.info("Retrieving availability");
         List<AvailabilityDto> availabilities = availabilityService.getAllLocations();
         if (availabilities.isEmpty()) {

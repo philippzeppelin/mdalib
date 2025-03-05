@@ -1,4 +1,4 @@
-package com.philippzeppelin.mdalib.serviceImpl;
+package com.philippzeppelin.mdalib.tests.unit.service;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.database.entity.Book;
@@ -7,9 +7,9 @@ import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
-import com.philippzeppelin.mdalib.service.serviceImpl.AuthorServiceImpl;
-import com.philippzeppelin.mdalib.serviceImpl.util.AuthorServiceUtil;
-import com.philippzeppelin.mdalib.serviceImpl.util.BookServiceUtil;
+import com.philippzeppelin.mdalib.service.impl.AuthorServiceImpl;
+import com.philippzeppelin.mdalib.tests.unit.service.util.AuthorServiceUtil;
+import com.philippzeppelin.mdalib.tests.unit.service.util.BookServiceUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

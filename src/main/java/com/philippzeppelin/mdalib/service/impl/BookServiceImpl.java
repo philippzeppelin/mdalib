@@ -1,4 +1,4 @@
-package com.philippzeppelin.mdalib.service.serviceImpl;
+package com.philippzeppelin.mdalib.service.impl;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.database.entity.Availability;
@@ -48,11 +48,14 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteBook(Long bookId) { // TODO N+1 MDA-1017
         log.info("Deleting book with id: {}", bookId);
-        if (!bookRepository.existsById(bookId)) {
+        if (bookRepository.existsById(bookId)) {
+            System.out.println(bookRepository.existsById(bookId));
+            bookRepository.deleteById(bookId);
+            log.info("Book with ID {} deleted successfully", bookId);
+        } else {
             log.error("Book with ID {} not found", bookId);
+            throw new RuntimeException("Book with ID " + bookId + " not found"); // TODO исправить на кастомную ошибку
         }
-        bookRepository.deleteById(bookId);
-        log.info("Book with ID {} deleted successfully", bookId);
     }
 }
 

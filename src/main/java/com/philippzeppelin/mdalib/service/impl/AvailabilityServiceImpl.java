@@ -1,4 +1,4 @@
-package com.philippzeppelin.mdalib.service.serviceImpl;
+package com.philippzeppelin.mdalib.service.impl;
 
 import com.philippzeppelin.mdalib.dto.AvailabilityDto;
 import com.philippzeppelin.mdalib.mapper.AvailabilityMapper;
