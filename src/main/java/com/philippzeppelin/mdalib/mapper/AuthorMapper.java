@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 public class AuthorMapper implements Mapper<Author, AuthorDto> {
 
     @Override
-    public AuthorDto map(Author object) {
+    public AuthorDto mapToDto(Author object) {
         return new AuthorDto(
                 object.getName(),
                 object.getBirthDate()
         );
     }
 
-    public Author map(AuthorDto dto) {
+    public Author mapToEntity(AuthorDto dto) {
         return Author.builder()
                 .name(dto.getName())
                 .birthDate(dto.getBirthDate())

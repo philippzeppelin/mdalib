@@ -3,6 +3,9 @@ package com.philippzeppelin.mdalib.http.controller;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.service.AuthorService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,26 +26,28 @@ public class AuthorController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AuthorDto>> getAuthors(
             @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size) {
         List<AuthorDto> authors = authorService.getAuthors(name, page, size);
         if (authors.isEmpty()) {
             log.warn("No authors found");
+            return ResponseEntity.notFound().build();
         }
         log.info("Found {} authors", authors.size());
-        return authors.isEmpty()
-                ? ResponseEntity.notFound().build()
-                : ResponseEntity.ok(authors);
+        return ResponseEntity.ok(authors);
     }
 
-    @PostMapping
-    public ResponseEntity<AuthorDto> createNewAuthor(@RequestBody AuthorDto authorDto) {
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthorDto> createNewAuthor(@Valid @NotNull @RequestBody AuthorDto authorDto) {
         log.info("Creating new author {}", authorDto.getName());
         try {
             AuthorDto createdAuthor = authorService.saveAuthor(authorDto);
-            return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
+            log.info("Created author: {}", createdAuthor);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(createdAuthor);
         } catch (Exception e) { // TODO custom exception handler
-            log.error("Error creating new author: {}", e.getMessage()); // TODO Ошибку переделать
+            log.error("Error creating new author: {}", e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

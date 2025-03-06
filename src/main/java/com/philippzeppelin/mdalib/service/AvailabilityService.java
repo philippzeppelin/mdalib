@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AvailabilityService {
 
-    List<AvailabilityDto> getAllLocations();
+    List<AvailabilityDto> getAllAvailabilities();
 }
