@@ -20,6 +20,10 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     private final AvailabilityRepository availabilityRepository;
     private final AvailabilityMapper availabilityMapper;
 
+    /**
+     * Gets all availabilities
+     * @return list of availabilities
+     */
     @Override
     public List<AvailabilityDto> getAllAvailabilities() {
         log.info("Get all locations");
