@@ -173,7 +173,7 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     public void getBooksByAuthorId_withNotExistingAuthor() {
         // Несуществующий автор.
         long authorId = 999L;
-        when(authorService.findBooksByAuthorId(1L)).thenReturn(List.of());
+        when(authorService.findBooksByAuthorId(authorId)).thenReturn(List.of());
         RestAssured
                 .given()
                 .when()

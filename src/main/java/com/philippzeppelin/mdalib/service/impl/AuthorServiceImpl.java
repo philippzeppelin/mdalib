@@ -7,7 +7,6 @@ import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
 import com.philippzeppelin.mdalib.service.AuthorService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,6 +27,13 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
     private final BookMapper bookMapper;
 
+    /**
+     * Retrieves all authors, named author or authors with pagination.
+     * @param name the name filter
+     * @param page the page number
+     * @param size the page size
+     * @return a list of AuthorDto objects
+     */
     @Override
     public List<AuthorDto> getAuthors(String name, int page, int size) { // TODO getAll N+1 MDA-1017 // по имени нет N+1 // пагинация N+1
         log.info("Get authors with name: {}, page: {}, size: {}", name, page, size);
@@ -40,6 +45,12 @@ public class AuthorServiceImpl implements AuthorService {
         return authors;
     }
 
+    /**
+     * Saves author
+     * @param authorDto dto containing author
+     * @return the saved dto author
+     * @throws // TODO создать исключение и забахать сюда
+     */
     @Override
     @Transactional
     public AuthorDto saveAuthor(AuthorDto authorDto) {
@@ -59,6 +70,12 @@ public class AuthorServiceImpl implements AuthorService {
         }
     }
 
+    /**
+     * Finds books by author ID
+     * @param id author id to find books
+     * @return list of books
+     * @throws // TODO создать кастомную ошибку // when author ID == null
+     */
     @Override
     public List<BookDto> findBooksByAuthorId(Long id) {
         if (id == null) {
@@ -71,7 +88,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .toList();
         if (books.isEmpty()) {
             log.warn("No books found for author: {}", id);
-            throw new EntityNotFoundException("No books found for author: " + id); // TODO Создать исключение
         } else {
             log.info("Found {} books", books.size());
         }

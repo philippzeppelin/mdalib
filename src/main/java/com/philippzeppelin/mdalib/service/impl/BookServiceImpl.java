@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
@@ -28,6 +28,11 @@ public class BookServiceImpl implements BookService {
     private final AvailabilityRepository availabilityRepository;
     private final BookMapper bookMapper;
 
+    /**
+     * Adding a book
+     * @param bookDto dto containing book details to be saved
+     * @return the saved book dto
+     */
     @Override
     public BookDto addBook(BookDto bookDto) { // TODO N+1 MDA-1017
         log.info("Searching for author with id: {}", bookDto.getAuthorId());
@@ -44,6 +49,11 @@ public class BookServiceImpl implements BookService {
         return bookMapper.mapToDto(savedBook);
     }
 
+    /**
+     * Deletes the book
+     * @param bookId book ID to delete
+     * @throws // TODO забахать исключение кастомное
+     */
     @Override
     public void deleteBook(Long bookId) { // TODO N+1 MDA-1017
         log.info("Deleting book with id: {}", bookId);
