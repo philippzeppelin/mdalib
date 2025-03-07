@@ -1,5 +1,9 @@
 package com.philippzeppelin.mdalib.tests.integration;
 
+import com.github.dockerjava.api.exception.NotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorBooksNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorsNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.InvalidAuthorException;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
 import com.philippzeppelin.mdalib.service.AuthorService;
 import com.philippzeppelin.mdalib.tests.integration.pojo.AuthorCreateRequest;
@@ -88,7 +92,8 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void getAllAuthors_emptyResult() {
-        when(authorService.getAuthors(null, 0, 10)).thenReturn(List.of());
+        when(authorService.getAuthors(null, 0, 10))
+                .thenThrow(new AuthorsNotFoundException("Authors not found"));
         RestAssured
                 .given()
                 .when()
@@ -158,9 +163,10 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getBooksByAuthorId_emptyResult() {
+    public void getBooksByAuthorId_emptyResult() { // TODO исправить
         long authorId = 1L;
-        when(authorService.findBooksByAuthorId(1L)).thenReturn(List.of());
+        when(authorService.findBooksByAuthorId(1L))
+                .thenThrow(new AuthorBooksNotFoundException("Books not found"));
         RestAssured
                 .given()
                 .when()
@@ -170,10 +176,10 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getBooksByAuthorId_withNotExistingAuthor() {
+    public void getBooksByAuthorId_withNotExistingAuthor() { // TODO исправить
         // Несуществующий автор.
         long authorId = 999L;
-        when(authorService.findBooksByAuthorId(authorId)).thenReturn(List.of());
+        when(authorService.findBooksByAuthorId(authorId)).thenThrow(new NotFoundException("Author not found"));
         RestAssured
                 .given()
                 .when()

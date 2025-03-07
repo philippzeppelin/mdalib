@@ -3,9 +3,7 @@ package com.philippzeppelin.mdalib.service.impl;
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.AuthorBooksNotFoundException;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.AuthorPersistenceException;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.InvalidAuthorException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.*;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -45,6 +44,10 @@ public class AuthorServiceImpl implements AuthorService {
         List<AuthorDto> authors = authorRepository.findByNameContainingIgnoreCase(name == null ? "" : name, pageable)
                 .map(authorMapper::mapToDto).stream()
                 .toList();
+        if (authors.isEmpty()) {
+            log.info("No authors found with name: {}, page: {}, size: {}", name, page, size);
+            throw new AuthorsNotFoundException("Authors not found");
+        }
         log.info("Found {} authors", authors.size());
         return authors;
     }
@@ -82,6 +85,7 @@ public class AuthorServiceImpl implements AuthorService {
      * @param id author id to find books
      * @return list of books
      * @throws InvalidAuthorException if author ID == null
+     * @throws AuthorBooksNotFoundException if books not found
      */
     @Override
     public List<BookDto> findBooksByAuthorId(Long id) {
@@ -90,7 +94,9 @@ public class AuthorServiceImpl implements AuthorService {
             throw new InvalidAuthorException("Author ID cannot be null");
         }
         log.info("Find books by authorId: {}", id);
-        List<BookDto> books = authorRepository.findBooksByAuthorId(id).stream()
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new AuthorNotFoundException("Author not found"));
+        List<BookDto> books = author.getBooks().stream()
                 .map(bookMapper::mapToDto)
                 .toList();
         if (books.isEmpty()) {
