@@ -1,9 +1,9 @@
 package com.philippzeppelin.mdalib.tests.integration;
 
-import com.github.dockerjava.api.exception.NotFoundException;
+
 import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorBooksNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
 import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorsNotFoundException;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.InvalidAuthorException;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
 import com.philippzeppelin.mdalib.service.AuthorService;
 import com.philippzeppelin.mdalib.tests.integration.pojo.AuthorCreateRequest;
@@ -12,6 +12,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
@@ -25,9 +26,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthorIntegrationTest extends IntegrationTestBase {
 
-    @Autowired
-    private AuthorRepository authorRepository;
-
+//    @MockitoSpyBean
+//    @MockBean
     @MockitoSpyBean
     private AuthorService authorService;
 
@@ -163,7 +163,7 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getBooksByAuthorId_emptyResult() { // TODO исправить
+    public void getBooksByAuthorId_emptyResult() {
         long authorId = 1L;
         when(authorService.findBooksByAuthorId(1L))
                 .thenThrow(new AuthorBooksNotFoundException("Books not found"));
@@ -176,12 +176,11 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getBooksByAuthorId_withNotExistingAuthor() { // TODO исправить
-        // Несуществующий автор.
+    public void getBooksByAuthorId_withNotExistingAuthor() {
         long authorId = 999L;
-        when(authorService.findBooksByAuthorId(authorId)).thenThrow(new NotFoundException("Author not found"));
         RestAssured
                 .given()
+                .contentType(ContentType.JSON)
                 .when()
                 .get(getBaseUrl() + "/" + authorId + "/books")
                 .then()

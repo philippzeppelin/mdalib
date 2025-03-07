@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,7 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .map(authorMapper::mapToDto).stream()
                 .toList();
         if (authors.isEmpty()) {
-            log.info("No authors found with name: {}, page: {}, size: {}", name, page, size);
+            log.error("No authors found with name: {}, page: {}, size: {}", name, page, size);
             throw new AuthorsNotFoundException("Authors not found");
         }
         log.info("Found {} authors", authors.size());
@@ -88,6 +89,7 @@ public class AuthorServiceImpl implements AuthorService {
      * @throws AuthorBooksNotFoundException if books not found
      */
     @Override
+    @Transactional(readOnly = true, noRollbackFor = AuthorNotFoundException.class)
     public List<BookDto> findBooksByAuthorId(Long id) {
         if (id == null) {
             log.error("Attempt to find books by null AuthorId");
@@ -100,7 +102,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .map(bookMapper::mapToDto)
                 .toList();
         if (books.isEmpty()) {
-            log.warn("No books found for author: {}", id);
+            log.error("No books found for author: {}", id);
             throw new AuthorBooksNotFoundException("No books found for author: " + id);
         } else {
             log.info("Found {} books", books.size());

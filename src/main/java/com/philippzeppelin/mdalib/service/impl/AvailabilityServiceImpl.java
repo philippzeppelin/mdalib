@@ -1,6 +1,7 @@
 package com.philippzeppelin.mdalib.service.impl;
 
 import com.philippzeppelin.mdalib.dto.AvailabilityDto;
+import com.philippzeppelin.mdalib.http.handler.exceptions.availability.exception.AvailabilitiesNotFoundException;
 import com.philippzeppelin.mdalib.mapper.AvailabilityMapper;
 import com.philippzeppelin.mdalib.repository.AvailabilityRepository;
 import com.philippzeppelin.mdalib.service.AvailabilityService;
@@ -26,14 +27,15 @@ public class AvailabilityServiceImpl implements AvailabilityService {
      */
     @Override
     public List<AvailabilityDto> getAllAvailabilities() {
-        log.info("Get all locations");
-        List<AvailabilityDto> locations = availabilityRepository.findAll().stream()
+        log.info("Get all availabilities");
+        List<AvailabilityDto> availabilities = availabilityRepository.findAll().stream()
                 .map(availabilityMapper::mapToDto)
                 .toList();
-        log.info("Found {} locations", locations.size());
-        if (locations.isEmpty()) {
-            log.warn("No locations found");
+        if (availabilities.isEmpty()) {
+            log.error("Availabilities not found");
+            throw new AvailabilitiesNotFoundException("Availabilities not found");
         }
-        return locations;
+        log.info("Found {} availabilities", availabilities.size());
+        return availabilities;
     }
 }
