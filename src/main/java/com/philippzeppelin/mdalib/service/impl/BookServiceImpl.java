@@ -14,7 +14,6 @@ import com.philippzeppelin.mdalib.repository.AuthorRepository;
 import com.philippzeppelin.mdalib.repository.AvailabilityRepository;
 import com.philippzeppelin.mdalib.repository.BookRepository;
 import com.philippzeppelin.mdalib.service.BookService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,10 +34,11 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Adding a book
+     *
      * @param bookDto dto containing book details to be saved
      * @return the saved book dto
-     * @throws InvalidBookException if author dto is null
-     * @throws AuthorNotFoundException if author not found
+     * @throws InvalidBookException     if author dto is null
+     * @throws AuthorNotFoundException  if author not found
      * @throws BookPersistenceException if it gets error while saving the book
      */
     @Override
@@ -69,6 +69,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * Deletes the book
+     *
      * @param bookId book ID to delete
      * @throws BookNotFoundException if book not found
      * @throws BookDeletionException if it gets error while deleting the book
@@ -79,7 +80,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> {
                     log.error("Book with ID {} not found", bookId);
-                    return new BookNotFoundException("Book with ID " + bookId + " not found"); // TODO custom exception
+                    return new BookNotFoundException("Book with ID " + bookId + " not found");
                 });
         try {
             bookRepository.delete(book);

@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -85,7 +83,7 @@ public class AuthorServiceImpl implements AuthorService {
      *
      * @param id author id to find books
      * @return list of books
-     * @throws InvalidAuthorException if author ID == null
+     * @throws InvalidAuthorException       if author ID == null
      * @throws AuthorBooksNotFoundException if books not found
      */
     @Override

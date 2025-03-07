@@ -2,7 +2,6 @@ package com.philippzeppelin.mdalib.http.controller;
 
 import com.philippzeppelin.mdalib.dto.BookDto;
 import com.philippzeppelin.mdalib.service.BookService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

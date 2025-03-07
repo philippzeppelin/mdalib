@@ -25,9 +25,9 @@ public class AuthorController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AuthorDto>> getAuthors( // TODO N+1 MDA-1017 pagination
-            @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = "0") @Min(0) int page,
-            @RequestParam(defaultValue = "10") @Min(1) int size) {
+                                                       @RequestParam(required = false) String name,
+                                                       @RequestParam(defaultValue = "0") @Min(0) int page,
+                                                       @RequestParam(defaultValue = "10") @Min(1) int size) {
         List<AuthorDto> authors = authorService.getAuthors(name, page, size);
         log.info("Found {} authors", authors.size());
         return ResponseEntity.ok(authors);

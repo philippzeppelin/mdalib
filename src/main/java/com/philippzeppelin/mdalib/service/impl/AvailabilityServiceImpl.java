@@ -23,6 +23,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
 
     /**
      * Gets all availabilities
+     *
      * @return list of availabilities
      */
     @Override

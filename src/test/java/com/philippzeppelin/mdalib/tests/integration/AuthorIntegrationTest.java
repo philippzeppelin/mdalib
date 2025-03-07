@@ -2,22 +2,17 @@ package com.philippzeppelin.mdalib.tests.integration;
 
 
 import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorBooksNotFoundException;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
 import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorsNotFoundException;
-import com.philippzeppelin.mdalib.repository.AuthorRepository;
 import com.philippzeppelin.mdalib.service.AuthorService;
 import com.philippzeppelin.mdalib.tests.integration.pojo.AuthorCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
@@ -26,8 +21,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthorIntegrationTest extends IntegrationTestBase {
 
-//    @MockitoSpyBean
-//    @MockBean
     @MockitoSpyBean
     private AuthorService authorService;
 
