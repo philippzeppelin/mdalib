@@ -3,6 +3,9 @@ package com.philippzeppelin.mdalib.service.impl;
 import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.AuthorBooksNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.AuthorPersistenceException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.InvalidAuthorException;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
@@ -29,6 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     /**
      * Retrieves all authors, named author or authors with pagination.
+     *
      * @param name the name filter
      * @param page the page number
      * @param size the page size
@@ -47,16 +51,18 @@ public class AuthorServiceImpl implements AuthorService {
 
     /**
      * Saves author
+     *
      * @param authorDto dto containing author
      * @return the saved dto author
-     * @throws // TODO создать исключение и забахать сюда
+     * @throws InvalidAuthorException     if author dto is null
+     * @throws AuthorPersistenceException if it gets error while saving the author
      */
     @Override
     @Transactional
     public AuthorDto saveAuthor(AuthorDto authorDto) {
         if (authorDto == null) {
             log.error("Attempt to save null AuthorDto");
-            throw new IllegalArgumentException("Attempt to save null AuthorDto"); // TODO Создать исключение
+            throw new InvalidAuthorException("Author DTO cannot be null");
         }
         log.info("Save author: {}", authorDto);
         Author author = authorMapper.mapToEntity(authorDto);
@@ -64,23 +70,24 @@ public class AuthorServiceImpl implements AuthorService {
             Author savedAuthor = authorRepository.save(author);
             log.info("Saved author: {}", savedAuthor);
             return authorMapper.mapToDto(savedAuthor);
-        } catch (Exception e) {
-            log.error("Failed to save author: {}", authorDto, e);
-            throw new IllegalArgumentException("Failed to save author: " + authorDto); // TODO Создать исключение
+        } catch (AuthorPersistenceException e) {
+            log.error("Failed to save author: {}", authorDto);
+            throw new AuthorPersistenceException("Failed to save author: " + authorDto);
         }
     }
 
     /**
      * Finds books by author ID
+     *
      * @param id author id to find books
      * @return list of books
-     * @throws // TODO создать кастомную ошибку // when author ID == null
+     * @throws InvalidAuthorException if author ID == null
      */
     @Override
     public List<BookDto> findBooksByAuthorId(Long id) {
         if (id == null) {
             log.error("Attempt to find books by null AuthorId");
-            throw new IllegalArgumentException("Author ID cannot be null");
+            throw new InvalidAuthorException("Author ID cannot be null");
         }
         log.info("Find books by authorId: {}", id);
         List<BookDto> books = authorRepository.findBooksByAuthorId(id).stream()
@@ -88,6 +95,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .toList();
         if (books.isEmpty()) {
             log.warn("No books found for author: {}", id);
+            throw new AuthorBooksNotFoundException("No books found for author: " + id);
         } else {
             log.info("Found {} books", books.size());
         }
