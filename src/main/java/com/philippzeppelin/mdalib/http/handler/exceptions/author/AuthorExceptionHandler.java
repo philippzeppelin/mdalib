@@ -1,7 +1,10 @@
 package com.philippzeppelin.mdalib.http.handler.exceptions.author;
 
 import com.philippzeppelin.mdalib.http.handler.ResponseError;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.*;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorBooksNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorPersistenceException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.InvalidAuthorException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +40,6 @@ public class AuthorExceptionHandler {
     public ResponseEntity<ResponseError> handleAuthorNotFoundException(AuthorNotFoundException e) {
         log.error("Author not found: {}", e.getMessage());
         ResponseError error = new ResponseError("Author not found", e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(AuthorsNotFoundException.class)
-    public ResponseEntity<ResponseError> handleAuthorsNotFoundException(AuthorsNotFoundException e) {
-        log.error("Authors not found: {}", e.getMessage());
-        ResponseError error = new ResponseError("Authors not found", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }

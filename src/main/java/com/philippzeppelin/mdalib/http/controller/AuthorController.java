@@ -24,10 +24,10 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AuthorDto>> getAuthors( // TODO N+1 MDA-1017 pagination
-                                                       @RequestParam(required = false) String name,
-                                                       @RequestParam(defaultValue = "0") @Min(0) int page,
-                                                       @RequestParam(defaultValue = "10") @Min(1) int size) {
+    public ResponseEntity<List<AuthorDto>> getAuthors(
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size) {
         List<AuthorDto> authors = authorService.getAuthors(name, page, size);
         log.info("Found {} authors", authors.size());
         return ResponseEntity.ok(authors);
@@ -42,7 +42,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}/books")
-    public ResponseEntity<List<BookDto>> getBooksByAuthorId(@PathVariable Long id) { // TODO N+1 MDA-1017
+    public ResponseEntity<List<BookDto>> getBooksByAuthorId(@PathVariable Long id) {
         log.info("Retrieving author books for author {}", id);
         List<BookDto> books = authorService.findBooksByAuthorId(id);
         log.info("Found books for {}", id);

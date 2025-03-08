@@ -2,7 +2,7 @@ package com.philippzeppelin.mdalib.tests.integration;
 
 
 import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorBooksNotFoundException;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorsNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
 import com.philippzeppelin.mdalib.service.AuthorService;
 import com.philippzeppelin.mdalib.tests.integration.pojo.AuthorCreateRequest;
 import io.restassured.RestAssured;
@@ -86,7 +86,7 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
     @Test
     public void getAllAuthors_emptyResult() {
         when(authorService.getAuthors(null, 0, 10))
-                .thenThrow(new AuthorsNotFoundException("Authors not found"));
+                .thenThrow(new AuthorNotFoundException("Authors not found"));
         RestAssured
                 .given()
                 .when()
