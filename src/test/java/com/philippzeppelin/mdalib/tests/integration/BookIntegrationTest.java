@@ -92,7 +92,7 @@ public class BookIntegrationTest {
                 .when()
                 .post(getBaseUrl())
                 .then()
-                .statusCode(500);
+                .statusCode(404);
     }
 
     //    http://localhost:8080/api/v1/books/27

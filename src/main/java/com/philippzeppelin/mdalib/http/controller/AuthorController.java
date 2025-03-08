@@ -24,15 +24,11 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AuthorDto>> getAuthors(
-            @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = "0") @Min(0) int page,
-            @RequestParam(defaultValue = "10") @Min(1) int size) {
+    public ResponseEntity<List<AuthorDto>> getAuthors( // TODO N+1 MDA-1017 pagination
+                                                       @RequestParam(required = false) String name,
+                                                       @RequestParam(defaultValue = "0") @Min(0) int page,
+                                                       @RequestParam(defaultValue = "10") @Min(1) int size) {
         List<AuthorDto> authors = authorService.getAuthors(name, page, size);
-        if (authors.isEmpty()) {
-            log.warn("No authors found");
-            return ResponseEntity.notFound().build();
-        }
         log.info("Found {} authors", authors.size());
         return ResponseEntity.ok(authors);
     }
@@ -40,26 +36,15 @@ public class AuthorController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> createNewAuthor(@Valid @NotNull @RequestBody AuthorDto authorDto) {
         log.info("Creating new author {}", authorDto.getName());
-        try {
-            AuthorDto createdAuthor = authorService.saveAuthor(authorDto);
-            log.info("Created author: {}", createdAuthor);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(createdAuthor);
-        } catch (Exception e) { // TODO custom exception handler
-            log.error("Error creating new author: {}", e.getMessage());
-            return ResponseEntity.internalServerError().build();
-        }
+        AuthorDto createdAuthor = authorService.saveAuthor(authorDto);
+        log.info("Created author: {}", createdAuthor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
     }
 
     @GetMapping("/{id}/books")
     public ResponseEntity<List<BookDto>> getBooksByAuthorId(@PathVariable Long id) { // TODO N+1 MDA-1017
         log.info("Retrieving author books for author {}", id);
         List<BookDto> books = authorService.findBooksByAuthorId(id);
-        if (books.isEmpty()) {
-            log.warn("No books found for id {}", id);
-            return ResponseEntity.notFound().build();
-        }
         log.info("Found books for {}", id);
         return ResponseEntity.ok(books);
     }

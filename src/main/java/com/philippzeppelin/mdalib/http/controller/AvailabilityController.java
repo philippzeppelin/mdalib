@@ -24,10 +24,6 @@ public class AvailabilityController {
     public ResponseEntity<List<AvailabilityDto>> getAvailabilities() {
         log.info("Retrieving availability");
         List<AvailabilityDto> availabilities = availabilityService.getAllAvailabilities();
-        if (availabilities.isEmpty()) {
-            log.warn("No availability found");
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         log.info("Found {} availability", availabilities.size());
         return ResponseEntity.status(HttpStatus.OK).body(availabilities);
     }
