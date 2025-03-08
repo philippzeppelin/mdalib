@@ -1,9 +1,13 @@
 package com.philippzeppelin.mdalib.service.impl;
 
 import com.philippzeppelin.mdalib.database.entity.Author;
+import com.philippzeppelin.mdalib.database.entity.Book;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.*;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorPersistenceException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.InvalidAuthorException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.book.exception.BookNotFoundException;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
@@ -37,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
      * @return a list of AuthorDto objects
      */
     @Override
-    public List<AuthorDto> getAuthors(String name, int page, int size) { // TODO getAll N+1 MDA-1017 // по имени нет N+1 // пагинация N+1
+    public List<AuthorDto> getAuthors(String name, int page, int size) {
         log.info("Get authors with name: {}, page: {}, size: {}", name, page, size);
         Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
         List<AuthorDto> authors = authorRepository.findByNameContainingIgnoreCase(name == null ? "" : name, pageable)
@@ -45,7 +49,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .toList();
         if (authors.isEmpty()) {
             log.error("No authors found with name: {}, page: {}, size: {}", name, page, size);
-            throw new AuthorsNotFoundException("Authors not found");
+            throw new AuthorNotFoundException("Authors not found");
         }
         log.info("Found {} authors", authors.size());
         return authors;
@@ -83,28 +87,22 @@ public class AuthorServiceImpl implements AuthorService {
      *
      * @param id author id to find books
      * @return list of books
-     * @throws InvalidAuthorException       if author ID == null
-     * @throws AuthorBooksNotFoundException if books not found
+     * @throws InvalidAuthorException if author ID == null
+     * @throws BookNotFoundException  if books not found
      */
     @Override
-    @Transactional(readOnly = true, noRollbackFor = AuthorNotFoundException.class)
     public List<BookDto> findBooksByAuthorId(Long id) {
         if (id == null) {
             log.error("Attempt to find books by null AuthorId");
             throw new InvalidAuthorException("Author ID cannot be null");
         }
-        log.info("Find books by authorId: {}", id);
-        Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author not found"));
-        List<BookDto> books = author.getBooks().stream()
+        List<Book> books = authorRepository.findBooksByAuthorId(id);
+        if (books.isEmpty()) {
+            log.error("No authors found with id: {}", id);
+            throw new BookNotFoundException("Books not found with author id: " + id);
+        }
+        return books.stream()
                 .map(bookMapper::mapToDto)
                 .toList();
-        if (books.isEmpty()) {
-            log.error("No books found for author: {}", id);
-            throw new AuthorBooksNotFoundException("No books found for author: " + id);
-        } else {
-            log.info("Found {} books", books.size());
-        }
-        return books;
     }
 }

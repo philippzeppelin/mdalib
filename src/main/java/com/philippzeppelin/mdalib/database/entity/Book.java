@@ -36,4 +36,14 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "availability_id")
     )
     private List<Availability> availabilities;
+
+    @Override
+    public String toString() {
+        return "Book{" +
+               "author=" + author +
+               ", publicationYear=" + publicationYear +
+               ", title='" + title + '\'' +
+               ", id=" + id +
+               '}';
+    }
 }
