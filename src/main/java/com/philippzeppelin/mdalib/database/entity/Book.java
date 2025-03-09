@@ -19,11 +19,11 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String title;
 
-    private int publicationYear;
+    private Integer publicationYear;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
@@ -36,4 +36,14 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "availability_id")
     )
     private List<Availability> availabilities;
+
+    @Override
+    public String toString() {
+        return "Book{" +
+               "author=" + author +
+               ", publicationYear=" + publicationYear +
+               ", title='" + title + '\'' +
+               ", id=" + id +
+               '}';
+    }
 }
