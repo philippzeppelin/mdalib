@@ -18,6 +18,31 @@
 
 ---
 
+## Запуск приложения
+
+1. Скачать проект через github
+
+2. Запустить приложение:
+   В терминале IDE:
+-     docker-compose up
+
+3. Добавить данные с помощью data.sql:
+
+   Скопировать файл в контейнер:
+-     docker cp src/main/resources/sql/data.sql mdalib-db-1:/tmp/data.sql
+
+   Выполненить команду, которая заполняет данными БД:
+-     docker exec -it mdalib-db-1 psql -U postgres -d postgres -f /tmp/data.sql
+
+4. Запустить тесты unit.service и integration, нажав на ПКМ по пакету и выбрав Run
+
+5. Импортировать запросы в Postman по ссылке: https://gist.github.com/mdaudit-support/396a27d2be4e05b5eace49736b889177
+
+6. Сделать запросы в Postman для проверки работоспособности приложения.
+
+
+---
+
 ## Основные требования
 
 ### 1. Модели данных
