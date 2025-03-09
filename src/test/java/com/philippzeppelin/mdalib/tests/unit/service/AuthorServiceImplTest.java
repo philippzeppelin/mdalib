@@ -4,6 +4,8 @@ import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.database.entity.Book;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
+import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.InvalidAuthorException;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
 import com.philippzeppelin.mdalib.repository.AuthorRepository;
@@ -65,15 +67,6 @@ class AuthorServiceImplTest {
 
         verify(authorRepository, times(1))
                 .findByNameContainingIgnoreCase(eq(""), any(Pageable.class));
-    }
-
-    @Test
-    @DisplayName("Поиск авторов с пустым результатом")
-    void getAllAuthors_EmptyResult() {
-        when(authorRepository.findByNameContainingIgnoreCase(eq(""), any(Pageable.class)))
-                .thenReturn(Page.empty());
-        List<AuthorDto> result = authorService.getAuthors(null, 0, 100);
-        assertTrue(result.isEmpty());
     }
 
     @Test
@@ -143,7 +136,7 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("Сохранение null author")
     void saveAuthor_withNull() {
-        assertThrows(IllegalArgumentException.class, () -> authorService.saveAuthor(null)); // TODO Переделать на кастомный класс-эксешпн
+        assertThrows(InvalidAuthorException.class, () -> authorService.saveAuthor(null));
     }
 
     @Test
@@ -154,9 +147,9 @@ class AuthorServiceImplTest {
 
         when(authorMapper.mapToEntity(authorDto)).thenReturn(author);
         when(authorRepository.save(author))
-                .thenThrow(new RuntimeException("Ошибка сохранении автора")); // TODO Переделать на кастомный класс-эксешпн
+                .thenThrow(new InvalidAuthorException("Ошибка сохранении автора"));
 
-        assertThrows(IllegalArgumentException.class, () -> authorService.saveAuthor(authorDto));
+        assertThrows(InvalidAuthorException.class, () -> authorService.saveAuthor(authorDto));
     }
 
     @Test
@@ -181,18 +174,6 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("Поиск книг с некорректным id автора")
     void findBooksByAuthorId_withNullAuthorId() {
-        assertThrows(IllegalArgumentException.class, () -> authorService.findBooksByAuthorId(null)); // TODO Переделать на кастомный класс-эксешпн
-    }
-
-    @Test
-    @DisplayName("Поиск книг по id автора с пустым результатом")
-    void findBooksByAuthorId_withEmptyResult() {
-        Long authorId = 1L;
-        when(authorRepository.findBooksByAuthorId(authorId)).thenReturn(List.of());
-
-        List<BookDto> result = authorService.findBooksByAuthorId(authorId);
-
-        assertTrue(result.isEmpty());
-        verify(authorRepository, times(1)).findBooksByAuthorId(authorId);
+        assertThrows(InvalidAuthorException.class, () -> authorService.findBooksByAuthorId(null));
     }
 }

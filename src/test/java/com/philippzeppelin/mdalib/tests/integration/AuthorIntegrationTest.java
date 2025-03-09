@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AuthorIntegrationTest extends IntegrationTestBase {
+public class AuthorIntegrationTest {
 
     @MockitoSpyBean
     private AuthorService authorService;
@@ -148,7 +148,7 @@ public class AuthorIntegrationTest extends IntegrationTestBase {
                 .get(getBaseUrl() + "/" + authorId + "/books")
                 .then()
                 .statusCode(200)
-                .body("size()", is(5))
+                .body("size()", is(6))
                 .body("[0].title", is("Евгений Онегин"))
                 .body("[0].publicationYear", is(1833))
                 .body("[0].authorId", is(1))

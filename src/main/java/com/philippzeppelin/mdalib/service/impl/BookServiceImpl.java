@@ -53,16 +53,12 @@ public class BookServiceImpl implements BookService {
         Author author = authorRepository.findById(bookDto.getAuthorId())
                 .orElseThrow(() -> new AuthorNotFoundException("Author not found"));
         List<Availability> availabilities = availabilityRepository.findAllById(bookDto.getAvailabilityIds());
-        if (availabilities.size() != bookDto.getAvailabilityIds().size()) {
-            throw new AvailabilitiesNotFoundException("Some availability IDs not found");
-        }
         Book book = Book.builder()
                 .title(bookDto.getTitle())
                 .publicationYear(bookDto.getPublicationYear())
                 .author(author)
                 .availabilities(availabilities)
                 .build();
-
         try {
             Book savedBook = bookRepository.save(book);
             log.info("Saved book with id: {}, title: {}", savedBook.getId(), savedBook.getTitle());
