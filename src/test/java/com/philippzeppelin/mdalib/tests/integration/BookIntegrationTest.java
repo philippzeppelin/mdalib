@@ -98,7 +98,7 @@ public class BookIntegrationTest {
     //    http://localhost:8080/api/v1/books/27
     @Test
     public void deleteBook_success() {
-        long bookId = 20L;
+        long bookId = 19L;
         RestAssured
                 .given()
                 .when()
