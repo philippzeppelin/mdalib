@@ -4,7 +4,6 @@ import com.philippzeppelin.mdalib.database.entity.Author;
 import com.philippzeppelin.mdalib.database.entity.Book;
 import com.philippzeppelin.mdalib.dto.AuthorDto;
 import com.philippzeppelin.mdalib.dto.BookDto;
-import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.AuthorNotFoundException;
 import com.philippzeppelin.mdalib.http.handler.exceptions.author.exception.InvalidAuthorException;
 import com.philippzeppelin.mdalib.mapper.AuthorMapper;
 import com.philippzeppelin.mdalib.mapper.BookMapper;
